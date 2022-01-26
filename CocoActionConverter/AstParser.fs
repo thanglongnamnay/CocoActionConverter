@@ -38,7 +38,7 @@ module AstParser =
         pNumber
         pString
         pVariable
-    ]
+    ] <?> "string, number or function call"
     let parser = pAst
     // For more information see https://aka.ms/fsharp-console-apps
     
