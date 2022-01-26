@@ -1,10 +1,8 @@
 ﻿// Copyright Fabulous contributors. See LICENSE.md for license.
 namespace CocoActionConverter
 
-open System.Diagnostics
 open Fabulous
 open Fabulous.XamarinForms
-open Fabulous.XamarinForms.LiveUpdate
 open Xamarin.Forms
 open FParsec
 
@@ -38,10 +36,11 @@ module App =
              
     let view (model: Model) dispatch =
         View.ContentPage(
-          content = View.StackLayout(padding = Thickness 20.0, verticalOptions = LayoutOptions.Center,
+            content = View.StackLayout(padding = Thickness 20.0, verticalOptions = LayoutOptions.Center,
             children = [
                 View.Editor(
                     text = model.Source,
+                    placeholder = "Paste the action here",
                     completed = (fun text -> dispatch (EditComplete text)),
                     height = 300.0,
                     fontSize = FontSize.fromValue 32.0)
