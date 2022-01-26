@@ -2,6 +2,7 @@
 
 open System
 
+open System.Windows
 open Xamarin.Forms
 open Xamarin.Forms.Platform.WPF
 
@@ -17,5 +18,6 @@ module Main =
         Forms.Init()
         let window = MainWindow() 
         window.LoadApplication(new CocoActionConverter.App())
-
+        window.Title <- "Coco Action Converter 1.0"
+        window.WindowState <- WindowState.Maximized
         app.Run(window)
