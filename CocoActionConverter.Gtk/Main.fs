@@ -10,10 +10,10 @@ module Main =
         Gtk.Application.Init()
         Forms.Init()
 
-        let app = CocoActionConverter.App()
+        let app = new CocoActionConverter.App()
         let window = new FormsWindow()
         window.LoadApplication(app)
-        window.SetApplicationTitle("Coco Action Converter 1.0")
+        window.SetApplicationTitle("Hello Fabulous GTK#")
         window.Show();
 
         Gtk.Application.Run()
