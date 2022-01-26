@@ -10,10 +10,11 @@ module AstParser =
     let pString = CharParsers.pchar '"' >>. charsTill "\"" |>> AString
     let pVariable = CharParsers.regex """^[_$a-z][\w$]*$""" |>> AVariable
     let pCallFunc = CharParsers.pstring "cc.callFunc" >>. ParingParensParser.parser |>> ACallFunc
-    let pParenOpen = CharParsers.pchar '('
-    let pParenClose = CharParsers.pchar ')'
+    let pParenOpen = CharParsers.pchar '(' .>> (opt (CharParsers.pchar '['))
+    let pParenClose = (opt (CharParsers.pchar ']')) >>. CharParsers.pchar ')'
     let pInsideParens parser = pParenOpen >>. parser .>> pParenClose
-    let splitBy token parser = Primitives.between pParenOpen pParenClose (CharParsers.spaces >>. sepBy (parser .>> CharParsers.spaces) (CharParsers.pstring token >>. CharParsers.spaces))
+    let spaces = CharParsers.spaces
+    let splitBy token parser = Primitives.between pParenOpen pParenClose (spaces >>. sepEndBy (parser .>> spaces) (CharParsers.pstring token >>. spaces))
     let pParamsInsideParens = splitBy "," pAst
     let pCocoActionName = pCoco >>. charsTill "("
     let pEasing = CharParsers.pstringCI ".easing(cc." >>. charsTill "(" .>>. pParamsInsideParens .>> CharParsers.pstring ")"
@@ -21,11 +22,8 @@ module AstParser =
     let pRepeatLimit = CharParsers.pstringCI ".repeat" >>. pInsideParens pAst |>> Limit
     let pRepeat = pRepeatForever <|> pRepeatLimit
     let pCocoAction =
-        pCocoActionName
-        .>>. pParamsInsideParens
-        .>>. Primitives.opt pEasing
-        .>>. Primitives.opt pRepeat
-        |>> fun (((name, list), easing), repeat) -> ACocoAction {
+        tuple4 pCocoActionName pParamsInsideParens (opt pEasing) (opt pRepeat)
+        |>> fun (name, list, easing, repeat) -> ACocoAction {
         Name = name
         Params = list
         Easing = easing |> Option.map (fun (name, paramList) -> {
