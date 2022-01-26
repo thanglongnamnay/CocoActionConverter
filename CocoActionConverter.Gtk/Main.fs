@@ -12,6 +12,7 @@ module Main =
 
         let app = new CocoActionConverter.App()
         let window = new FormsWindow()
+        window.Maximize();
         window.LoadApplication(app)
         window.SetApplicationTitle("Coco Action Converter 1.0")
         window.Show();
