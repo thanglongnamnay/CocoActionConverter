@@ -3,7 +3,12 @@ namespace CocoActionConverter
 open FParsec
 type Tree = Leaf of string | Node of Tree list
 module ParingParensParser =
-    let parseTree, parseTreeRef = createParserForwardedToRef<Tree, unit>()
+    let lazyParser() =
+        let dummyParser = fun _ -> failwith "a parser created with createParserForwardedToRef was not initialized"
+        let r = ref dummyParser
+        (fun stream -> r.Value stream), r : Parser<_,'u> * Parser<_,'u> ref
+        
+    let parseTree, parseTreeRef = lazyParser<Tree, unit>()
     let node = between (CharParsers.pchar '(') (CharParsers.pchar ')') (many parseTree) |>> Node
     let leaf = many1 (noneOf "()") |>> (fun chars -> System.String.Concat(Array.ofList(chars))) |>> Leaf
     parseTreeRef.Value <- node <|> leaf

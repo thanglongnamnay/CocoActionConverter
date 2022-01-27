@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="Parsec.fs" />
+    <Compile Include="Ast.fs" />
+    <Compile Include="ParingParensParser.fsi" />
+    <Compile Include="ParingParensParser.fs" />
+    <Compile Include="AstParser.fsi" />
+    <Compile Include="AstParser.fs" />
+    <Compile Include="AstCompiler.fs" />
+    <Compile Include="Library.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FParsec" Version="1.1.1" />
+  </ItemGroup>
+
+</Project>

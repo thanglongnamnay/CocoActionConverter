@@ -3,7 +3,11 @@ open System
 open FParsec
 
 module AstParser =
-    let pAst, pAstRef = createParserForwardedToRef<Ast, unit>()
+    let lazyParser() = // for fable
+        let dummyParser = fun _ -> failwith "a parser created with createParserForwardedToRef was not initialized"
+        let r = ref dummyParser
+        (fun stream -> r.Value stream), r : Parser<_,'u> * Parser<_,'u> ref
+    let pAst, pAstRef = lazyParser<Ast, unit>()
     let charsTill str = CharParsers.charsTillString str false Int32.MaxValue <?> $"String till '{str}'"
     let pCoco = CharParsers.pstring "cc."
     let pNumber = CharParsers.pfloat |>> ANumber
@@ -17,9 +21,9 @@ module AstParser =
     let splitBy token parser = Primitives.between pParenOpen pParenClose (spaces >>. sepEndBy (parser .>> spaces) (CharParsers.pstring token >>. spaces))
     let pParamsInsideParens = splitBy "," pAst <?> "Params split by comma"
     let pCocoActionName = pCoco >>. charsTill "("
-    let pEasing = CharParsers.pstringCI ".easing(cc." >>. charsTill "(" .>>. pParamsInsideParens .>> CharParsers.pstring ")" <?> "Coco Easing action"
-    let pRepeatForever = CharParsers.stringCIReturn ".repeatForever()" Forever
-    let pRepeatLimit = CharParsers.pstringCI ".repeat" >>. pInsideParens pAst |>> Limit
+    let pEasing = CharParsers.pstring ".easing(cc." >>. charsTill "(" .>>. pParamsInsideParens .>> CharParsers.pstring ")" <?> "Coco Easing action"
+    let pRepeatForever = CharParsers.stringReturn ".repeatForever()" Forever
+    let pRepeatLimit = CharParsers.pstring ".repeat" >>. pInsideParens pAst |>> Limit
     let pRepeat = pRepeatForever <|> pRepeatLimit
     let pCocoAction =
         tuple4 pCocoActionName pParamsInsideParens (opt pEasing) (opt pRepeat)

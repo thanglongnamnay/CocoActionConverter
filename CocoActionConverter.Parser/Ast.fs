@@ -17,4 +17,3 @@ and Easing = {
     Name: string
     Params: Ast list
 }
-

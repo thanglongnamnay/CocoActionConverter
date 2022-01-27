@@ -6,12 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="Ast.fs" />
-    <Compile Include="ParingParensParser.fsi" />
-    <Compile Include="ParingParensParser.fs" />
-    <Compile Include="AstParser.fsi" />
-    <Compile Include="AstParser.fs" />
-    <Compile Include="AstCompiler.fs" />
     <Compile Include="CocoActionConverter.fs" />
   </ItemGroup>
   
@@ -25,5 +19,9 @@
     <PackageReference Include="FSharp.Core" Version="5.0.0" />
     <PackageReference Update="FSharp.Core" Version="5.0.0" /> <!-- workaround for VSMac bug https://github.com/mono/monodevelop/pull/5137 --> 
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\CocoActionConverter.Parser\CocoActionConverter.Parser.fsproj" />
   </ItemGroup>
 </Project>
