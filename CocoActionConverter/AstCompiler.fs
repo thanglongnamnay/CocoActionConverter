@@ -14,9 +14,6 @@ module AstCompiler =
         | ANumber value -> cppNumberConverter value
         | AString value -> $"\"{value}\""
         | AVariable value -> value
-        | AFuncCall data ->
-            let paramsString = data.Params |> List.map compile |> String.concat ", "
-            $"{data.Name}({paramsString})"
         | ACocoAction data ->
             let dataParams =
                 if data.Name = "sequence" || data.Name = "spawn"
