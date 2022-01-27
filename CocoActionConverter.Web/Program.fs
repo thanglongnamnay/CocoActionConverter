@@ -10,7 +10,7 @@ open System.IO
  
 let siteRoot = @"."
 let defaultFile = "index.html"
-let host = "http://+:8080/"
+let host = "http://*:8080/"
  
 let listener (handler:(HttpListenerRequest->HttpListenerResponse->Async<unit>)) =
     let hl = new HttpListener()

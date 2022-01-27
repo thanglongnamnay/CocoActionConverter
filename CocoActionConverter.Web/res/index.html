@@ -3,18 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <title>Coco Action Converter</title>
+    <style>
+        html {
+            background-color: black;
+            color: #aaa;
+        }
+    </style>
 </head>
 <body>
-<form enctype="multipart/form-data">
-    <label for="file">
-        File: <br>
-        <input type="file" id="file">
-        <input type="submit" id="submit" value="Convert">
-    </label>
-</form>
-<div>Result:</div>
-<br>
-<code id="result"></code>
+<div id="wrap">
+    <form enctype="multipart/form-data">
+        <label for="file">
+            File: <br>
+            <input type="file" id="file">
+        </label>
+    </form>
+    <div>Result:</div>
+    <br>
+    <pre id="result"></pre>
+</div>
 <script>
     function makeError () {
       return new DOMException('The request is not allowed', 'NotAllowedError')
@@ -74,7 +81,6 @@
         }
       }
     }
-    const server = "https://a619e3e7e263e5.lhr.life/";
     async function postData(url = '', data = {}) {
       // Default options are marked with *
       const response = await fetch(url, {
@@ -94,16 +100,13 @@
       return await response.text(); // parses JSON response into native JavaScript objects
     }
     
-    document.getElementById("submit").onclick = e => {
-        e.preventDefault();
-    }
     const result = document.getElementById("result");
     document.getElementById("file").onchange = e => {
         const file = e.target.files[0];
         const reader = new FileReader();
         reader.onload = e => {
             console.log('request:', e.target.result);
-            postData(server, e.target.result)
+            postData(location.origin, e.target.result)
               .then(data => {
                     console.log('response:', data);
                     result.innerText = data;

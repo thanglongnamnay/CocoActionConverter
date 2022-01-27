@@ -8,10 +8,6 @@
     <ItemGroup>
         <Compile Include="Program.fs" />
     </ItemGroup>
-
-    <ItemGroup>
-      <Content Include="res\index.html" />
-    </ItemGroup>
     <ItemGroup>
         <Content Include="res\**\*">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
