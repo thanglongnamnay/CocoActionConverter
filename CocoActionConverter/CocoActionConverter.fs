@@ -21,18 +21,61 @@ module App =
     let initModel = { Source = ""; Dest = "" }
 
     let init () = initModel, Cmd.none
-    let compiler = AstParser.parser |>> AstCompiler.compile
+    
+    let actions = [
+        "cc.sequence"
+        "cc.spawn"
+        "cc.repeat"
+        "cc.repeatForever"
+        "cc.speed"
+        "cc.show"
+        "cc.hide"
+        "cc.toggleVisibility"
+        "cc.removeSelf"
+        "cc.flipX"
+        "cc.flipY"
+        "cc.place"
+        "cc.callFunc"
+        "cc.targetedAction"
+        "cc.moveTo"
+        "cc.moveBy"
+        "cc.rotateTo"
+        "cc.rotateBy"
+        "cc.scaleTo"
+        "cc.scaleBy"
+        "cc.skewTo"
+        "cc.skewBy"
+        "cc.jumpBy"
+        "cc.jumpTo"
+        "cc.follow"
+        "cc.bezierTo"
+        "cc.bezierBy"
+        "cc.blink"
+        "cc.fadeTo"
+        "cc.fadeIn"
+        "cc.fadeOut"
+        "cc.tintTo"
+        "cc.tintBy"
+        "cc.delayTime"
+    ]
+
+    let pRaw = CharParsers.many1CharsTill CharParsers.anyChar (CharParsers.eof :: (actions |> List.map CharParsers.followedByStringCI) |> choice)
+    let pAction = AstParser.parser |>> AstCompiler.compile
+    let parser = [pAction; pRaw] |> choice |> many
 
     let rec update msg model =
         match msg with
         | EditComplete str ->
             update Convert {model with Source = str}
         | Convert ->
-            let result = CharParsers.run compiler model.Source
+            let result = CharParsers.run parser model.Source
+            System.Console.Write "result: "
+            System.Console.WriteLine result
             match result with
-            | Success(str, _, _) ->
-                TextCopy.ClipboardService.SetTextAsync str |> ignore
-                {model with Dest = str}, Cmd.none
+            | Success(strList, _, _) ->
+                let text = (strList |> String.concat "")
+                TextCopy.ClipboardService.SetTextAsync text |> ignore
+                {model with Dest = text}, Cmd.none
             | Failure _ ->
                 {model with Dest = result.ToString()}, Cmd.none
              
@@ -59,9 +102,9 @@ module App =
     // Note, this declaration is needed if you enable LiveUpdate
     let program =
         XamarinFormsProgram.mkProgram init update view
-#if DEBUG
-        |> Program.withConsoleTrace
-#endif
+//#if DEBUG
+//        |> Program.withConsoleTrace
+//#endif
 
 type App () as app = 
     inherit Application ()
