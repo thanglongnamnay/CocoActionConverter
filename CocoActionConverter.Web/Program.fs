@@ -7,7 +7,12 @@ open System.IO
 // download this file to your root directory and name as ws.fsx
 // run with `fsi --load:ws.fsx`
 // visit http://localhost:8080
- 
+open CocoActionConverter
+open FParsec
+AstParser.test()
+let pAction = AstParser.parser |>> AstCompiler.compile
+
+
 let siteRoot = @"."
 let defaultFile = "index.html"
 let host = "http://*:8080/"

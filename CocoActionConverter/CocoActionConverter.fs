@@ -20,47 +20,8 @@ module App =
 
     let init () = initModel, Cmd.none
     
-    let actions = [
-        "cc.sequence"
-        "cc.spawn"
-        "cc.repeat"
-        "cc.repeatForever"
-        "cc.speed"
-        "cc.show"
-        "cc.hide"
-        "cc.toggleVisibility"
-        "cc.removeSelf"
-        "cc.flipX"
-        "cc.flipY"
-        "cc.place"
-        "cc.callFunc"
-        "cc.targetedAction"
-        "cc.moveTo"
-        "cc.moveBy"
-        "cc.rotateTo"
-        "cc.rotateBy"
-        "cc.scaleTo"
-        "cc.scaleBy"
-        "cc.skewTo"
-        "cc.skewBy"
-        "cc.jumpBy"
-        "cc.jumpTo"
-        "cc.follow"
-        "cc.bezierTo"
-        "cc.bezierBy"
-        "cc.blink"
-        "cc.fadeTo"
-        "cc.fadeIn"
-        "cc.fadeOut"
-        "cc.tintTo"
-        "cc.tintBy"
-        "cc.delayTime"
-    ]
-
-    let pRaw = CharParsers.many1CharsTill CharParsers.anyChar (CharParsers.eof :: (actions |> List.map CharParsers.followedByStringCI) |> choice)
-    let pAction = AstParser.parser |>> AstCompiler.compile
-    let parser = [pAction; pRaw] |> choice |> many
-
+    let parser = AstParser.parser |>> AstCompiler.compile
+    
     let rec update msg model =
         match msg with
         | EditComplete str ->
@@ -70,8 +31,8 @@ module App =
             System.Console.Write "result: "
             System.Console.WriteLine result
             match result with
-            | Success(strList, _, _) ->
-                let text = (strList |> String.concat "")
+            | Success(text, _, _) ->
+                System.Console.WriteLine $"Success: {text}"
                 TextCopy.ClipboardService.SetTextAsync text |> ignore
                 {model with Dest = text}, Cmd.none
             | Failure _ ->

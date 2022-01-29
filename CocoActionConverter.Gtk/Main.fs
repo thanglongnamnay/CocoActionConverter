@@ -10,7 +10,7 @@ module Main =
         Gtk.Application.Init()
         Forms.Init()
 
-        let app = new CocoActionConverter.App()
+        let app = CocoActionConverter.App()
         let window = new FormsWindow()
         window.Maximize();
         window.LoadApplication(app)
