@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Bolero Application</title>
+    <base href="/">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css" rel="stylesheet">
+    <link href="css/index.css" rel="stylesheet">
+</head>
+<body>
+<nav aria-label="main navigation" class="navbar is-dark" role="navigation">
+    <div class="navbar-brand">
+        <a class="navbar-item has-text-weight-bold is-size-5" href="https://fsbolero.io">
+            <img src="https://github.com/fsbolero/website/raw/master/src/Website/img/wasm-fsharp.png"
+                 style="height:40px"/>
+            &nbsp;
+            Bolero
+        </a>
+    </div>
+</nav>
+<div id="main">Loading...</div>
+<noscript>We're sorry but you need to enable Javascript for the app correctly</noscript>
+<script>
+    navigator.serviceWorker.register('service-worker.js');
+</script>
+<script src="_framework/blazor.webassembly.js"></script>
+<script>
+    function fallbackCopyTextToClipboard(text) {
+  var textArea = document.createElement("textarea");
+  textArea.value = text;
+  
+  // Avoid scrolling to bottom
+  textArea.style.top = "0";
+  textArea.style.left = "0";
+  textArea.style.position = "fixed";
+
+  document.body.appendChild(textArea);
+  textArea.focus();
+  textArea.select();
+
+  try {
+    var successful = document.execCommand('copy');
+    var msg = successful ? 'successful' : 'unsuccessful';
+    console.log('Fallback: Copying text command was ' + msg);
+  } catch (err) {
+    console.error('Fallback: Oops, unable to copy', err);
+  }
+
+  document.body.removeChild(textArea);
+}
+function copyTextToClipboard(text) {
+  if (!navigator.clipboard) {
+    fallbackCopyTextToClipboard(text);
+    return;
+  }
+  navigator.clipboard.writeText(text).then(function() {
+    console.log('Async: Copying to clipboard was successful!');
+  }, function(err) {
+    console.error('Async: Could not copy text: ', err);
+  });
+}
+
+
+      window.copyDest = e => {
+        console.log("copyDest", e);
+        copyTextToClipboard(e);
+        console.log("done copyDest");
+      }
+    
+</script>
+</body>
+</html>

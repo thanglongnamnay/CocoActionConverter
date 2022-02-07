@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
+    </PropertyGroup>
+    <ItemGroup>
+        <Compile Include="Main.fs" />
+        <Compile Include="Startup.fs" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Bolero" Version="0.*" />
+        <PackageReference Include="Bolero.Build" Version="0.18.16" />
+        <PackageReference Include="FParsec" Version="1.1.1" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.*" />
+        <PackageReference Include="System.Net.Http.Json" Version="6.0.*" />
+        <PackageReference Update="FSharp.Core" Version="6.0.3" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\CocoActionConverter.Parser\CocoActionConverter.Parser.fsproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
+    </ItemGroup>
+</Project>

@@ -1,6 +1,6 @@
 ﻿namespace CocoActionConverter.Gtk
+
 open System.Reflection
-open System.Runtime.CompilerServices
 
 [<assembly: AssemblyTitle("CocoActionConverter.Gtk")>]
 [<assembly: AssemblyDescription("")>]

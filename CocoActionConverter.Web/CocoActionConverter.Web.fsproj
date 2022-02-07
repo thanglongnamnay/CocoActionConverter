@@ -15,14 +15,15 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\CocoActionConverter.Parser\CocoActionConverter.Parser.fsproj" />
+        <ProjectReference Include="..\CocoActionConverter.Parser\CocoActionConverter.Parser.fsproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="MimeTypes" Version="2.2.1">
-        <PrivateAssets>all</PrivateAssets>
-        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      </PackageReference>
+        <PackageReference Include="MimeTypes" Version="2.2.1">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Update="FSharp.Core" Version="6.0.3" />
     </ItemGroup>
 
 </Project>

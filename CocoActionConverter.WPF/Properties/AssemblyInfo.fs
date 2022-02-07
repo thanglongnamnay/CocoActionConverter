@@ -1,6 +1,6 @@
 ﻿namespace CocoActionConverter.WPF
+
 open System.Reflection
-open System.Runtime.CompilerServices
 
 // the name of the type here needs to match the name inside the ResourceDesigner attribute
 //type Resources = CocoActionConverter.Droid.Resource
