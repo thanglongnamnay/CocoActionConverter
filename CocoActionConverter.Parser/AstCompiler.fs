@@ -7,16 +7,15 @@ module AstCompiler =
         name
         |> String.mapi
             (fun i c ->
-                if i = 0 then
-                    c |> System.Char.ToUpper
-                else
-                    c)
+                match i with
+                | 0 -> Char.ToUpper c
+                | _ -> c)
 
     let cppNumberConverter (value: float) =
         let floor = System.Math.Floor value
 
         if (value = floor) then
-            int(floor).ToString()
+            string floor
         else
             $"{value}f"
 
@@ -40,10 +39,9 @@ module AstCompiler =
             $"{data.Name}({inside})"
         | ACocoAction data ->
             let dataParams =
-                if data.Name = "sequence" || data.Name = "spawn" then
-                    data.Params @ [ AVariable "nullptr" ]
-                else
-                    data.Params
+                match data.Name with
+                | "sequence" | "spawn" -> data.Params @ [ AVariable "nullptr" ]
+                | _ -> data.Params
 
             let paramsString =
                 dataParams
@@ -57,10 +55,9 @@ module AstCompiler =
                     |> String.concat ", "
 
                 let lastParamsString =
-                    if (paramsString.Length > 0) then
-                        $", {paramsString}"
-                    else
-                        ""
+                    match paramsString with
+                    | "" -> ""
+                    | str -> $", {str}"
 
                 $"{cppCocoConverter data.Name}::create({inner}{lastParamsString})"
 

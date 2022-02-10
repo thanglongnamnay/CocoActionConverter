@@ -1,19 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>Coco Action Converter</title>
-    <base href="/">
+    <meta name="description" content="Convert Javascript action to C++ action.">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css" rel="stylesheet">
     <link href="css/index.css" rel="stylesheet">
 </head>
 <body class="has-text-white has-background-dark">
 <div id="main" class="box has-text-white has-background-dark">Loading...</div>
 <noscript>App cannot work without Javascript.</noscript>
-<script>
-    navigator.serviceWorker.register('sw.js');
-</script>
 <script src="_framework/blazor.webassembly.js"></script>
 <script>
     function fallbackCopyTextToClipboard(text) {

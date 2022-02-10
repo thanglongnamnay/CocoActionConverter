@@ -2,6 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
+        <SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>
         <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
     </PropertyGroup>
     <ItemGroup>
@@ -20,6 +21,6 @@
         <ProjectReference Include="..\CocoActionConverter.Parser\CocoActionConverter.Parser.fsproj" />
     </ItemGroup>
     <ItemGroup>
-        <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
+        <ServiceWorker Include="wwwroot\sw.js" PublishedContent="wwwroot\sw.published.js" />
     </ItemGroup>
 </Project>
