@@ -24,7 +24,12 @@ module AstCompiler =
         | AInfix data -> data.Precedence
         | APrefix data -> data.Precedence
         | _ -> Int32.MaxValue
-
+    
+    let convertVec = function
+        | [a; x; y] -> [a; AFuncCall {Name = "Vec2"; Params = [x; y]}]
+        | [a; x; y; z] -> [a; AFuncCall {Name = "Vec3"; Params = [x; y; z]}]
+        | other -> other
+        
     let rec compileAst ast =
         match ast with
         | ANumber value -> cppNumberConverter value
@@ -41,6 +46,7 @@ module AstCompiler =
             let dataParams =
                 match data.Name with
                 | "sequence" | "spawn" -> data.Params @ [ AVariable "nullptr" ]
+                | "moveTo" | "moveBy" -> convertVec data.Params
                 | _ -> data.Params
 
             let paramsString =
