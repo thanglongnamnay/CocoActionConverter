@@ -38,8 +38,12 @@ module AstParser =
           "cc.fadeOut"
           "cc.tintTo"
           "cc.tintBy"
-          "cc.delayTime" ]
+          "cc.delayTime"
+          "//" ]
 
+    let charsTill str =
+        CharParsers.charsTillString str false Int32.MaxValue
+        <?> $"String till '{str}'"
     let pRaw =
         CharParsers.notFollowedByString "cc."
         >>. (CharParsers.many1CharsTill
@@ -48,6 +52,7 @@ module AstParser =
                   :: (actions |> List.map CharParsers.followedByStringCI)
                   |> choice))
         |>> ARaw
+    let pComment = pstring "//" >>. restOfLine true |>> fun str -> ARaw $"//{str}\n"
 
     let ch = CharParsers.pchar
     let str = CharParsers.pstring
@@ -68,11 +73,7 @@ module AstParser =
         OperatorPrecedenceParser<Ast, unit, unit>()
 
     let pAst = opp.ExpressionParser
-    let parser = [ pRaw; pAst ] |> choice |> many1
-
-    let charsTill str =
-        CharParsers.charsTillString str false Int32.MaxValue
-        <?> $"String till '{str}'"
+    let parser = [ pComment; pRaw; pAst ] |> choice |> many1
 
     let pCoco = str "cc."
     let pNumber = CharParsers.pfloat .>> ws |>> ANumber
@@ -179,12 +180,19 @@ module AstParser =
         Console.WriteLine(
             run
                 parser
-                """(function () {
-                this.setVisible(true);
-                this.getAnimation().gotoAndPlay("idle", -1, -1, 1);
-                this.setCompleteListener(function () {
-                    this.setVisible(false);
-                });
-            })"""
+                """
+    eff.setVisible(false);
+    // eff.runAction(
+    //     cc.sequence(
+    //         cc.delayTime(1 + timeMove * 1.5 + 0.15),
+    //         cc.callFunc(function () {
+    //             this.setVisible(true);
+    //             this.getAnimation().gotoAndPlay("idle", -1, -1, 1);
+    //             this.setCompleteListener(function () {
+    //                 this.setVisible(false);
+    //             });
+    //         }, eff)
+    //     )
+    // )"""
         )
 // For more information see https://aka.ms/fsharp-console-apps
