@@ -4,6 +4,7 @@ open Microsoft.AspNetCore.Components.WebAssembly.Hosting
 open Microsoft.Extensions.DependencyInjection
 open System
 open System.Net.Http
+open Blazored.LocalStorage
 
 module Program =
 
@@ -11,6 +12,7 @@ module Program =
     let Main args =
         let builder = WebAssemblyHostBuilder.CreateDefault(args)
         builder.RootComponents.Add<Main.MyApp>("#main")
+        builder.Services.AddBlazoredLocalStorage() |> ignore
         builder.Services.AddScoped<HttpClient>(fun _ ->
             new HttpClient(BaseAddress = Uri builder.HostEnvironment.BaseAddress)) |> ignore
         builder.Build().RunAsync() |> ignore

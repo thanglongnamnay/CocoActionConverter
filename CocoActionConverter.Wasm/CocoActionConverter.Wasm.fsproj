@@ -10,6 +10,7 @@
         <Compile Include="Startup.fs" />
     </ItemGroup>
     <ItemGroup>
+        <PackageReference Include="Blazored.LocalStorage" Version="4.1.5" />
         <PackageReference Include="Bolero" Version="0.*" />
         <PackageReference Include="Bolero.Build" Version="0.18.16" />
         <PackageReference Include="FParsec" Version="1.1.1" />
