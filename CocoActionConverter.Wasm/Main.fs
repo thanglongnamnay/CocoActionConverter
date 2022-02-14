@@ -90,7 +90,7 @@ module Converter =
 
     let convert model str =
         match model.Type with
-        | RegexReplace data -> Ok(data.Pattern.Replace(str, data.Value))
+        | RegexReplace data -> Ok(Regex.Replace(str, data.Pattern, data.Value))
         | ActionConverter ->
             match FParsec.CharParsers.run parser str with
             | FParsec.CharParsers.ParserResult.Success (v, _, _) -> Ok v
